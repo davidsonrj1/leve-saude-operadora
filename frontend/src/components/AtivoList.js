@@ -13,6 +13,7 @@ const AtivoList = () => {
   const [deletedAtivo, setDeletedAtivo] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [ativoToDelete, setAtivoToDelete] = useState(null);
+  
 
   const loadAtivos = useCallback(async () => {
     try {
@@ -249,49 +250,78 @@ const AtivoList = () => {
               </div>
               <div className="modal-body">
                 <div className="row">
-                  {Object.keys(editingAtivo)
-                    .filter((key) => key !== "id")
-                    .map((key) => (
-                      <div className="col-md-6 mb-3" key={key}>
-                        <label className="form-label text-capitalize">
-                          {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-                        </label>
-                        {key === "status" ? (
-                          <select
-                            className="form-select"
-                            value={editingAtivo[key] || ""}
-                            onChange={(e) =>
-                              setEditingAtivo({ ...editingAtivo, [key]: e.target.value })
-                            }
-                          >
-                            <option value="">Selecione o Status</option>
-                            <option value="Ativo">Ativo</option>
-                            <option value="Inativo">Inativo</option>
-                          </select>
-                        ) : key === "localidade" ? (
-                          <select
-                            className="form-select"
-                            value={editingAtivo[key] || ""}
-                            onChange={(e) =>
-                              setEditingAtivo({ ...editingAtivo, [key]: e.target.value })
-                            }
-                          >
-                            <option value="">Selecione a Localidade</option>
-                            <option value="LEVE SAUDE OPERADORA">LEVE SAUDE OPERADORA</option>
-                            <option value="AGGILE CORRETORA">AGGILE CORRETORA</option>
-                          </select>
-                        ) : (
-                          <input
-                            type={key.toLowerCase().includes("data") ? "date" : "text"}
-                            className="form-control"
-                            value={editingAtivo[key] || ""}
-                            onChange={(e) =>
-                              setEditingAtivo({ ...editingAtivo, [key]: e.target.value })
-                            }
-                          />
-                        )}
-                      </div>
-                    ))}
+{Object.keys(editingAtivo)
+  .filter((key) => key !== "id" && typeof editingAtivo[key] !== "boolean")
+  .map((key) => (
+    <div className="col-md-6 mb-3" key={key}>
+      <label className="form-label text-capitalize">
+        {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+      </label>
+      {key === "status" ? (
+        <select
+          className="form-select"
+          value={editingAtivo[key] || ""}
+          onChange={(e) =>
+            setEditingAtivo({ ...editingAtivo, [key]: e.target.value })
+          }
+        >
+          <option value="">Selecione o Status</option>
+          <option value="Ativo">Ativo</option>
+          <option value="Inativo">Inativo</option>
+        </select>
+      ) : key === "localidade" ? (
+        <select
+          className="form-select"
+          value={editingAtivo[key] || ""}
+          onChange={(e) =>
+            setEditingAtivo({ ...editingAtivo, [key]: e.target.value })
+          }
+        >
+          <option value="">Selecione a Localidade</option>
+          <option value="LEVE SAUDE OPERADORA">LEVE SAUDE OPERADORA</option>
+          <option value="AGGILE CORRETORA">AGGILE CORRETORA</option>
+        </select>
+      ) : (
+        <input
+          type={key.toLowerCase().includes("data") ? "date" : "text"}
+          className="form-control"
+          value={editingAtivo[key] || ""}
+          onChange={(e) =>
+            setEditingAtivo({ ...editingAtivo, [key]: e.target.value })
+          }
+        />
+      )}
+    </div>
+  ))}
+
+  {/* Renderizar checkboxes separadamente */}
+<div className="col-12 mt-4">
+  <h5 className="fw-bold">Opções de Segurança</h5>
+  <div className="d-flex flex-wrap gap-3">
+    {Object.keys(editingAtivo)
+      .filter((key) => typeof editingAtivo[key] === "boolean")
+      .map((key) => (
+        <div className="form-check form-check-inline" key={key}>
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id={key}
+            checked={editingAtivo[key]}
+            onChange={(e) =>
+              setEditingAtivo({ ...editingAtivo, [key]: e.target.checked })
+            }
+          />
+          <label
+            className="form-check-label text-capitalize"
+            htmlFor={key}
+          >
+            {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+          </label>
+        </div>
+      ))}
+  </div>
+</div>
+
                 </div>
               </div>
               <div className="modal-footer">
@@ -341,17 +371,34 @@ const AtivoList = () => {
         </div>
       )}
 
-      {/* Alerta para desfazer exclusão */}
-      {deletedAtivo && (
-        <div className="alert alert-warning d-flex justify-content-between align-items-center mt-3">
-          <span>Ativo excluído. Deseja desfazer?</span>
-          <button className="btn btn-sm btn-primary" onClick={handleUndoDelete}>
-            Desfazer
-          </button>
-        </div>
-      )}
+{/* Alerta para desfazer exclusão */}
+{deletedAtivo && (
+  <div className="alert alert-warning d-flex justify-content-between align-items-center mt-3" style={{ position: "relative" }}>
+    <span>Ativo excluído. Deseja desfazer?</span>
+    <button className="btn btn-sm btn-primary" onClick={handleUndoDelete}>
+      Desfazer
+    </button>
+    {/* Botão "X" para fechar o alerta */}
+    <button
+      style={{
+        position: "absolute",
+        top: "-6px",
+        right: "-5px",
+        background: "transparent",
+        border: "none",
+        fontSize: "16px",
+        color: "#856404",
+        cursor: "pointer",
+      }}
+      onClick={() => setDeletedAtivo(false)} // Função para fechar o alerta
+    >
+      ✖
+    </button>
+  </div>
+)}
+
     </div>
   );
-};
+}
 
 export default AtivoList;

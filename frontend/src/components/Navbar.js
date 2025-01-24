@@ -1,6 +1,6 @@
 import React from "react";
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
     return (
         <header>
             {/* Navbar principal */}
@@ -11,8 +11,8 @@ const Navbar = () => {
                     color: "white",
                 }}
             >
-                <div className="container-fluid d-flex justify-content-center">
-                <img
+                <div className="container-fluid d-flex justify-content-between align-items-center">
+                    <img
                         src="https://www.levesaude.com.br/build/assets/logo-menu-leve-5752d94b.png" // Substitua pelo caminho correto da logo
                         alt="LEVE SAÚDE"
                         style={{
@@ -20,6 +20,18 @@ const Navbar = () => {
                             maxWidth: "100%",
                         }}
                     />
+                    {/* Botão de logout */}
+                    <button
+                        className="btn btn-danger"
+                        style={{
+                            padding: "5px 15px",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                        }}
+                        onClick={onLogout}
+                    >
+                        Sair
+                    </button>
                 </div>
             </nav>
             {/* Subtítulo */}

@@ -158,13 +158,16 @@ const AtivoFormModal = () => {
                                     </div>
                                     <div className="col-md-4 mb-3">
                                         <label className="form-label">Localidade</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
+                                        <select
+                                            className="form-select"
                                             name="localidade"
                                             value={formData.localidade}
                                             onChange={handleChange}
-                                        />
+>
+                                            <option value="">Selecione a Localidade</option>
+                                            <option value="LEVE SAÚDE OPERADORA">LEVE SAÚDE OPERADORA</option>
+                                            <option value="AGGILE CORRETORA">AGGILE CORRETORA</option>
+                                        </select>
                                     </div>
                                     <div className="col-md-4 mb-3">
                                         <label className="form-label">Setor</label>

@@ -3,7 +3,7 @@ from django.db import models
 class Ativo(models.Model):
     nome = models.CharField(max_length=200)
     codigo_patrimonio = models.CharField(max_length=50, unique=True)
-    categoria = models.CharField(max_length=50, choices=[('Notebook', 'Notebook'), ('Desktop', 'Desktop')])
+    categoria = models.CharField(max_length=50, choices=[('Notebook', 'Notebook'), ('Desktop', 'Desktop'), ('Smartphone', 'Smartphone'), ('Monitor', 'Monitor')])
     localidade = models.CharField(max_length=100)
     setor = models.CharField(max_length=100)
     responsavel = models.CharField(max_length=100)
